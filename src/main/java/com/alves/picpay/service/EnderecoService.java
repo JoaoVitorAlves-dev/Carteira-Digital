@@ -29,9 +29,14 @@ public class EnderecoService {
         return enderecoRepository.findAll(pageable).map(EnderecoMapper::toDTO);
     }
 
-    public EnderecoResponse criar(EnderecoRequest req) {
+    public EnderecoResponse criar(EnderecoRequest req, Authentication auth) {
         Usuario usuario = usuarioRepository.findById(req.usuarioId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (usuario.getNome().equalsIgnoreCase(auth.getName())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+
         Endereco entity = EnderecoMapper.toEntity(req, usuario);
         return EnderecoMapper.toDTO(enderecoRepository.save(entity));
     }
