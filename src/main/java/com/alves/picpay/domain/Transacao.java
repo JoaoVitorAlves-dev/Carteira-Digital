@@ -34,6 +34,7 @@ public class Transacao {
     private String chaveDestino;
 
     @Column(name = "idempotency_key", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String idempotencyKey;
 
     @Column(name = "criada_em", nullable = false)
