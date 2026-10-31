@@ -69,4 +69,15 @@ public class ChavePixService {
         return ChavePixMapper.toDTO(chavePixRepository.save(chavePix));
     }
 
+    public void delete(String id, Authentication auth) {
+        ChavePix chavePix = chavePixRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (!chavePix.getCarteira().getUsuario().getEmail().equals(auth.getName())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+
+        chavePixRepository.delete(chavePix);
+    }
+
 }
