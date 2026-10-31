@@ -41,7 +41,7 @@ public class EnderecoService {
         return EnderecoMapper.toDTO(enderecoRepository.save(entity));
     }
 
-    public EnderecoResponse atualizar(EnderecoRequest req, Authentication auth) {
+    public EnderecoResponse atualizar(String id, EnderecoRequest req, Authentication auth) {
         Usuario usuario = usuarioRepository.findById(req.usuarioId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -49,20 +49,27 @@ public class EnderecoService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
 
-        Endereco entity = EnderecoMapper.toEntity(req, usuario);
-        return EnderecoMapper.toDTO(enderecoRepository.save(entity));
+        Endereco endereco = enderecoRepository.findByIdAndUsuarioId(id, req.usuarioId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        endereco.setUsuario(usuario);
+        endereco.setEstado(req.estado());
+        endereco.setCidade(req.cidade());
+        endereco.setCep(req.cep());
+        endereco.setRua(req.rua());
+
+        return EnderecoMapper.toDTO(enderecoRepository.save(endereco));
     }
 
-    public void apagarEndereco(EnderecoRequest req, Authentication auth) {
-        Usuario usuario = usuarioRepository.findById(req.usuarioId())
+    public void apagarEndereco(String id, Authentication auth) {
+        Endereco endereco = enderecoRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (!usuario.getEmail().equals(auth.getName())) {
+        if (!endereco.getUsuario().getEmail().equals(auth.getName())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
 
-        Endereco entity = EnderecoMapper.toEntity(req, usuario);
-        enderecoRepository.delete(entity);
+        enderecoRepository.delete(endereco);
     }
 
 }

@@ -5,7 +5,6 @@ import com.alves.picpay.domain.Usuario;
 import com.alves.picpay.dto.request.CarteiraRequest;
 import com.alves.picpay.dto.response.CarteiraResponse;
 import com.alves.picpay.mapper.CarteiraMapper;
-import com.alves.picpay.mapper.EnderecoMapper;
 import com.alves.picpay.repository.CarteiraRepository;
 import com.alves.picpay.repository.UsuarioRepository;
 import org.springframework.data.domain.Page;
@@ -43,7 +42,7 @@ public class CarteiraService {
         return CarteiraMapper.toDTO(carteiraRepository.save(entity));
     }
 
-    public CarteiraResponse atualizar(CarteiraRequest req, Authentication auth) {
+    public CarteiraResponse atualizar(String id,CarteiraRequest req, Authentication auth) {
         Usuario usuario = usuarioRepository.findById(req.usuarioId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -51,21 +50,25 @@ public class CarteiraService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
 
-        Carteira entity = CarteiraMapper.toEntity(req, usuario);
-
-        return CarteiraMapper.toDTO(carteiraRepository.save(entity));
-    }
-
-    public void apagar(CarteiraRequest req, Authentication auth) {
-        Usuario usuario = usuarioRepository.findById(req.usuarioId())
+        Carteira carteira = carteiraRepository.findByIdAndUsuarioId(id, req.usuarioId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (!usuario.getEmail().equals(auth.getName())) {
+        carteira.setVersion(req.version());
+        carteira.setUsuario(usuario);
+        carteira.setStatus(req.status());
+        carteira.setSaldo(req.saldo());
+
+        return CarteiraMapper.toDTO(carteiraRepository.save(carteira));
+    }
+
+    public void apagar(String id, Authentication auth) {
+        Carteira carteira = carteiraRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (!carteira.getUsuario().getEmail().equals(auth.getName())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
 
-        Carteira entity = CarteiraMapper.toEntity(req, usuario);
-        carteiraRepository.delete(entity);
+        carteiraRepository.delete(carteira);
     }
-
 }

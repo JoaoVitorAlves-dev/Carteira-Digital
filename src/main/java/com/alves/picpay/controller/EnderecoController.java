@@ -33,12 +33,12 @@ public class EnderecoController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<EnderecoResponse> update(@RequestBody @Valid EnderecoRequest req, Authentication auth) {
-        return ResponseEntity.ok(enderecoService.atualizar(req, auth));
+    public ResponseEntity<EnderecoResponse> update(@RequestParam String id, @RequestBody @Valid EnderecoRequest req, Authentication auth) {
+        return ResponseEntity.ok(enderecoService.atualizar(id, req, auth));
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<EnderecoResponse> delete(@RequestBody @Valid EnderecoRequest req, Authentication auth) {
+    public ResponseEntity<EnderecoResponse> delete(@RequestParam String req, Authentication auth) {
         enderecoService.apagarEndereco(req, auth);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

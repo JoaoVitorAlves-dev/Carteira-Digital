@@ -32,13 +32,13 @@ public class CarteiraController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<CarteiraResponse> update(@RequestBody @Valid CarteiraRequest req, Authentication auth) {
-        return ResponseEntity.ok(carteiraService.atualizar(req, auth));
+    public ResponseEntity<CarteiraResponse> update(@RequestParam String id, @RequestBody @Valid CarteiraRequest req, Authentication auth) {
+        return ResponseEntity.ok(carteiraService.atualizar(id, req, auth));
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> delete(@RequestBody @Valid CarteiraRequest req, Authentication auth) {
-        carteiraService.apagar(req, auth);
+    public ResponseEntity<Void> delete(@RequestParam String id, Authentication auth) {
+        carteiraService.apagar(id, auth);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
