@@ -47,7 +47,7 @@ public class TokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    public String extrairToken(HttpServletRequest req) {
+    private String extrairToken(HttpServletRequest req) {
         String authorization = req.getHeader("Authorization");
 
         if (authorization != null && authorization.startsWith("Bearer ")) {
