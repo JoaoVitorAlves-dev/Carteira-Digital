@@ -44,7 +44,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/picpay/endereco/list").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/picpay/endereco/delete").authenticated()
 
-
+                        .requestMatchers(HttpMethod.POST, "/picpay/carteira/create").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/picpay/carteira/update").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/picpay/carteira/list").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/picpay/carteira/delete").authenticated()
 
                         .anyRequest().authenticated())
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class));
