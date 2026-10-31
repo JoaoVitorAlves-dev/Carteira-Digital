@@ -34,7 +34,9 @@ public class SecurityConfig {
         http.csrf(cs -> cs.disable()
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST,"/picpay/auth/login", "/picpay/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/picpay/auth/login", "/picpay/auth/register", "/picpay/auth/refresh").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/picpay/auth/delete").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/picpay/auth/list").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class));
 

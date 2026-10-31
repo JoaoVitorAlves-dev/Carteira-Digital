@@ -62,7 +62,7 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
     }
 
-    public RefreshTokenRequest login(LoginRequest req) {
+    public RefreshTokenResponse login(LoginRequest req) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(req.username(), req.password()));
 
         Usuario usuario = usuarioRepository.findByUsername(req.username()).orElseThrow();
@@ -70,7 +70,7 @@ public class UsuarioService {
         String token = tokenService.gerarToken(usuario.getNome());
         String refresh = refreshTokenService.criar(usuario).getToken();
 
-        return new RefreshTokenRequest(token, refresh);
+        return new RefreshTokenResponse(token, refresh);
     }
 
     public void apagarPorToken(RefreshTokenRequest req) {
