@@ -26,7 +26,7 @@ public class UsuarioDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         return User.builder()
-                .username(usuario.getNome())
+                .username(usuario.getEmail())
                 .password(usuario.getPassword())
                 .roles(usuario.getRole().name())
                 .build();

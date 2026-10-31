@@ -33,7 +33,7 @@ public class EnderecoService {
         Usuario usuario = usuarioRepository.findById(req.usuarioId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (usuario.getNome().equalsIgnoreCase(auth.getName())) {
+        if (usuario.getEmail().equals(auth.getName())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
 
@@ -45,7 +45,7 @@ public class EnderecoService {
         Usuario usuario = usuarioRepository.findById(req.usuarioId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (!usuario.getNome().equalsIgnoreCase(auth.getName())) {
+        if (!usuario.getEmail().equals(auth.getName())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
 
@@ -57,7 +57,7 @@ public class EnderecoService {
         Usuario usuario = usuarioRepository.findById(req.usuarioId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (!usuario.getNome().equalsIgnoreCase(auth.getName())) {
+        if (!usuario.getEmail().equals(auth.getName())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
 

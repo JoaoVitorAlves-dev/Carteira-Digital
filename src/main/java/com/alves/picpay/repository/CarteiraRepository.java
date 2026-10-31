@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CarteiraRepository extends JpaRepository<Carteira, String> {
+
+    boolean findByIdAndUsuarioId(Long id, Long usuarioId);
+
 }
