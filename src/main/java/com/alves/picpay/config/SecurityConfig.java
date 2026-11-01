@@ -36,18 +36,23 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers(HttpMethod.POST,"/picpay/auth/login", "/picpay/auth/register", "/picpay/auth/refresh").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/picpay/auth/delete").permitAll()
                         .requestMatchers(HttpMethod.GET, "/picpay/auth/list").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/picpay/auth/delete").permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/picpay/endereco/create").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/picpay/endereco/update").authenticated()
                         .requestMatchers(HttpMethod.GET, "/picpay/endereco/list").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/picpay/endereco/update").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/picpay/endereco/delete").authenticated()
 
                         .requestMatchers(HttpMethod.POST, "/picpay/carteira/create").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/picpay/carteira/update").authenticated()
                         .requestMatchers(HttpMethod.GET, "/picpay/carteira/list").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/picpay/carteira/update").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/picpay/carteira/delete").authenticated()
+
+                        .requestMatchers(HttpMethod.POST, "/picpay/chavepix/create").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/picpay/chavepix/list").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/picpay/chavepix/update").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/picpay/chavepix/delete").authenticated()
 
                         .anyRequest().authenticated())
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class));

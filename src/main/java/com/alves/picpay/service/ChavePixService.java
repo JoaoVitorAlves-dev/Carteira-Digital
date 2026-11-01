@@ -46,7 +46,7 @@ public class ChavePixService {
         return ChavePixMapper.toDTO(entity);
     }
 
-    public ChavePixResponse update(String id,ChavePixRequest req, Authentication auth) {
+    public ChavePixResponse update(String id, ChavePixRequest req, Authentication auth) {
         Carteira carteira = carteiraRepository.findById(req.carteiraId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
