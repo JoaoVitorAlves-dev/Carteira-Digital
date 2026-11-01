@@ -54,6 +54,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/picpay/chavepix/update").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/picpay/chavepix/delete").authenticated()
 
+                        .requestMatchers(HttpMethod.POST, "/picpay/estorno/create").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/picpay/estorno/list").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/picpay/estorno/update").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/picpay/estorno/delete").authenticated()
+
                         .anyRequest().authenticated())
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class));
 
